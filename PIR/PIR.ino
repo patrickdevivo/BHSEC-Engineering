@@ -1,5 +1,6 @@
 /*
  * PIR sensor tester
+ * source: http://www.ladyada.net/learn/sensors/pir.html
  */
  
 int ledPin = 13;                // choose the pin for the LED
