@@ -1,4 +1,4 @@
-source: http://www.ladyada.net/media/wavshield/wavehc_play6singlekeyloop.pde
+//source: http://www.ladyada.net/media/wavshield/wavehc_play6singlekeyloop.pde
 
 #include <FatReader.h>
 #include <SdReader.h>
