@@ -2,19 +2,12 @@ void setup()
 {
   //Start Serial
   Serial.begin(9600);
-  //establish sensor-pins
-  pinMode(1, INPUT); 
-  pinMode(2, INPUT); 
-  pinMode(3, INPUT); 
-  pinMode(4, INPUT); 
-  pinMode(5, INPUT); 
-  pinMode(6, INPUT); 
-  pinMode(7, INPUT); 
-  pinMode(8, INPUT); 
-  pinMode(9, INPUT); 
-  pinMode(10, INPUT); 
-  pinMode(11, INPUT); 
-  pinMode(12, INPUT);
+  //Establish sensor-pins 1-12
+  for(int p=1; p<13; p++)
+  {
+    pinMode(p, INPUT);
+  }
+  
 } 
 //Start Loop
 void loop()
