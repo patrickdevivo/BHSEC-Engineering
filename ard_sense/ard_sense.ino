@@ -31,5 +31,5 @@ void loop()
     count+=1;
   } 
   //Print string in serial prompt to communicate with other Arduino
-  Serial.println(sense_status);
+  Serial.println(int(sense_status));
 }
