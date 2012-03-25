@@ -36,6 +36,7 @@ void loop()
       }
     }
   } 
+  //actually this is not that good of an idea
   Serial.println(sense_status[0]+sense_status[1]);
 
 
