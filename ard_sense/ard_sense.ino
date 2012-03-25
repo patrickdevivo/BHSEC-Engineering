@@ -1,7 +1,7 @@
 void setup()
 {
   Serial.begin(9600);
-  
+
   pinMode(1, INPUT); 
   pinMode(2, INPUT); 
   pinMode(3, INPUT); 
@@ -14,31 +14,16 @@ void setup()
   pinMode(10, INPUT); 
   pinMode(11, INPUT); 
   pinMode(12, INPUT);
-
-
-
 } 
 
 void loop()
 {
-  int sense_status[2];
+  char sense_status[12];
+  int count = 0;
   for(int n=1; n<13; n++)
   {
-    if (digitalRead(n)==1)
-    {
-      if (n==1) 
-      {
-        sense_status[0]=n;
-      }
-      else 
-      {
-        sense_status[1]=n;
-      }
-    }
+    sense_status[count]=digitalRead(n);
+    count+=1;
   } 
-  //actually this is not that good of an idea
-  Serial.println(sense_status[0]+sense_status[1]);
-
-
+  Serial.println(sense_status);
 }
-
