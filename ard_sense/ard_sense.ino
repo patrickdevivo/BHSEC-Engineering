@@ -1,9 +1,8 @@
 
-
 void setup()
 {
   Serial.begin(9600);
-  pinMode(0, INPUT);
+  
   pinMode(1, INPUT); 
   pinMode(2, INPUT); 
   pinMode(3, INPUT); 
@@ -15,6 +14,7 @@ void setup()
   pinMode(9, INPUT); 
   pinMode(10, INPUT); 
   pinMode(11, INPUT); 
+  pinMode(12, INPUT);
 
 
 
@@ -24,7 +24,7 @@ void loop()
 {
   int sense_status[2];
   int count = 0;
-  for(int n=0; n<12; n++)
+  for(int n=1; n<13; n++)
   {
     if (digitalRead(n)==1)
     {
