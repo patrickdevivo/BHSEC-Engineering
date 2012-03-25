@@ -1,4 +1,3 @@
-
 void setup()
 {
   Serial.begin(9600);
@@ -23,7 +22,6 @@ void setup()
 void loop()
 {
   int sense_status[2];
-  int count = 0;
   for(int n=1; n<13; n++)
   {
     if (digitalRead(n)==1)
