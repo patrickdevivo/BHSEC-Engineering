@@ -1,10 +1,12 @@
+source: http://www.ladyada.net/media/wavshield/wavehc_play6singlekeyloop.pde
+
 #include <FatReader.h>
 #include <SdReader.h>
 #include <avr/pgmspace.h>
 #include "WaveUtil.h"
 #include "WaveHC.h"
 
-
+//there is a problem here, this does not comile. but i got it from the source provided above
 SdReader card;    // This object holds the information for the card
 FatVolume vol;    // This holds the information for the partition on the card
 FatReader root;   // This holds the information for the filesystem on the card
