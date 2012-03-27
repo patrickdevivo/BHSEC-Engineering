@@ -1,9 +1,10 @@
+//Setup
 void setup()
 {
   //Start Serial
   Serial.begin(9600);
-  //Establish sensor-pins 1-12
-  for(int p=1; p<13; p++)
+  //Establish sensor-pins 2-13
+  for(int p=2; p<14; p++)
   {
     pinMode(p, INPUT);
   }
@@ -17,12 +18,14 @@ void loop()
   //Start a counter
   int count = 0;
   //For loop for reading sensors
-  for(int n=1; n<13; n++)
+  for(int n=2; n<14; n++)
   {
     //Reading sensors and putting value in the string in the place corresponding to sensor #
     sense_status[count]=digitalRead(n);
     count+=1;
   } 
   //Print string in serial prompt to communicate with other Arduino
-  Serial.println(int(sense_status));
+  Serial.print(sense_status);
+  Serial.println(".WAV!");
+
 }
