@@ -1,12 +1,10 @@
-//source: http://www.ladyada.net/media/wavshield/wavehc_play6singlekeyloop.pde
-
 #include <FatReader.h>
 #include <SdReader.h>
 #include <avr/pgmspace.h>
 #include "WaveUtil.h"
 #include "WaveHC.h"
 
-//there is a problem here, this does not comile. but i got it from the source provided above
+
 SdReader card;    // This object holds the information for the card
 FatVolume vol;    // This holds the information for the partition on the card
 FatReader root;   // This holds the information for the filesystem on the card
@@ -162,26 +160,29 @@ void check_switches()
 
 void loop() {
   byte i;
-  static byte playing = -1;
-  //THIS IS WHAT I WROTE TO THE CODE FROM THE WEBSITE
-  //Make sure to not read until there is something in Serial
-  while (Serial.available() == 0);
-  //Read message and convert it back to the number sent from ard_sense
-  int message = Serial.read()-'0';
-  //Makes the string that corresponds to the name of the wanted file
-  chr_message=char(message)+".WAV"
-      //COndition to play the file
-      if (playing != message ) 
-      {
-        playing = message;
-        playfile(chr_message);
-      }
-   
-
-  if (! wave.isplaying) {
-    playing = message;
+  char message[16];
+  int count = 0;
+ 
+  while (Serial.available() <2)
+  {
   }
+  for(int j = 0; j < 17; j++)
+  {
+    message[j] = '\0';
+  }
+  char ch = Serial.read();
+  for(int i = 0; i < 16 && ch != '!' ; i++, ch = Serial.read()) 
+  { 
+ 
+    message[i] = ch; 
+    while (Serial.available() <1)
+    {
+    }
+  }
+  playcomplete(message);
+  
 }
+
 
 
 // Plays a full file from beginning to end with no pause.
@@ -211,5 +212,3 @@ void playfile(char *name) {
   // ok time to play! start playback
   wave.play();
 }
-
-
