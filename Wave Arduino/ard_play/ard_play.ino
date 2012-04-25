@@ -179,7 +179,26 @@ void loop() {
     {
     }
   }
-  playcomplete(message);
+  while (playcomplete(message))
+  {
+    while (Serial.available() <2)
+    {
+    }
+    for(int j = 0; j < 17; j++)
+    {
+      message[j] = '\0';
+    }
+    char ch = Serial.read();
+    for(int i = 0; i < 16 && ch != '!' ; i++, ch = Serial.read()) 
+    { 
+ 
+      message[i] = ch; 
+      while (Serial.available() <1)
+    {
+    }
+    }
+    playcomplete(message);
+  }
   
 }
 
