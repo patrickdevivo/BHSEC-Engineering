@@ -160,8 +160,12 @@ void check_switches()
 
 void loop() {
   byte i;
+  playfile();
+  
+}
+
+void playfile() {
   char message[16];
-  int count = 0;
  
   while (Serial.available() <2)
   {
@@ -179,49 +183,14 @@ void loop() {
     {
     }
   }
-  while (playcomplete(message))
-  {
-    while (Serial.available() <2)
-    {
-    }
-    for(int j = 0; j < 17; j++)
-    {
-      message[j] = '\0';
-    }
-    char ch = Serial.read();
-    for(int i = 0; i < 16 && ch != '!' ; i++, ch = Serial.read()) 
-    { 
- 
-      message[i] = ch; 
-      while (Serial.available() <1)
-    {
-    }
-    }
-    playcomplete(message);
-  }
-  
-}
 
-
-
-// Plays a full file from beginning to end with no pause.
-void playcomplete(char *name) {
-  // call our helper to find and play this name
-  playfile(name);
-  while (wave.isplaying) {
-  // do nothing while its playing
-  }
-  // now its done playing
-}
-
-void playfile(char *name) {
   // see if the wave object is currently doing something
   if (wave.isplaying) {// already playing something, so stop it!
     wave.stop(); // stop it
   }
   // look in the root directory and open the file
-  if (!f.open(root, name)) {
-    putstring("Couldn't open file "); Serial.print(name); return;
+  if (!f.open(root, message)) {
+    putstring("Couldn't open file "); Serial.print(message); return;
   }
   // OK read the file and turn it into a wave object
   if (!wave.create(f)) {
