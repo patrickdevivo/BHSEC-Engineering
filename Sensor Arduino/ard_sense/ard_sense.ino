@@ -3,7 +3,7 @@ void setup()
   Serial.begin(9600);
   for(int i=2; i<=13; i++)
   {
-    pintMode(i, INPUT);
+    pinMode(i, INPUT);
   }
 }
 
@@ -14,7 +14,7 @@ void loop()
     Serial.print(digitalRead(p));
     pinMode(p, OUTPUT);
     digitalWrite(p, LOW);
-    pinMode(p, INPUT):
+    pinMode(p, INPUT);
   }
   Serial.println(".WAV!");
 }
