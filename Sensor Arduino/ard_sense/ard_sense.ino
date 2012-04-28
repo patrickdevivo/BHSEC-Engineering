@@ -12,7 +12,9 @@ void loop()
   for(int p=2; p<=13; p++)
   {
     Serial.print(digitalRead(p));
+    pinMode(p, OUTPUT);
     digitalWrite(p, LOW);
+    pinMode(p, INPUT):
   }
   Serial.println(".WAV!");
 }
