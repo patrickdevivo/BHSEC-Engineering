@@ -9,12 +9,22 @@ void setup()
 
 void loop()
 {
-  for(int p=2; p<=13; p++)
+  int n;
+  int m;
+  for(int p=2; p<=13; p+=2)
   {
-    Serial.print(digitalRead(p));
+    n = digitalRead(p);
+    m = digitalRead(p+1);
+    if (m==1)
+    {
+      m=2;
+    }
+    Serial.print(n+m);
     pinMode(p, OUTPUT);
     digitalWrite(p, LOW);
+    digitalWrite(p+1, LOW);
     pinMode(p, INPUT);
   }
   Serial.println(".WAV!");
 }
+
