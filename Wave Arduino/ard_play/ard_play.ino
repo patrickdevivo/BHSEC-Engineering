@@ -103,17 +103,17 @@ void setup() {
 }
 
 void loop() {
-  char message[12];
+  char message[10];
  
   while (Serial.available() <2)
   {
   }
-  for(int j = 0; j < 13; j++)
+  for(int j = 0; j < 11; j++)
   {
     message[j] = '\0';
   }
   char ch = Serial.read();
-  for(int i = 0; i < 13 && ch != '!' ; i++, ch = Serial.read()) 
+  for(int i = 0; i < 11 && ch != '!' ; i++, ch = Serial.read()) 
   { 
  
     message[i] = ch; 
