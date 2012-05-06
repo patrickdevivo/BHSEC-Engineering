@@ -25,6 +25,6 @@ void loop()
     digitalWrite(p+1, LOW);
     pinMode(p, INPUT);
   }
-  Serial.println(".WAV!");
+  Serial.print(".WAV!");
 }
 
