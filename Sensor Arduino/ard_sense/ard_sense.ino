@@ -9,6 +9,7 @@ void setup()
 
 void loop()
 {
+  char message;
   int n;
   int m;
   for(int p=2; p<=13; p+=2)
@@ -19,12 +20,13 @@ void loop()
     {
       m=2;
     }
-    Serial.print(n+m);
+    message+=(n+m);
     pinMode(p, OUTPUT);
     digitalWrite(p, LOW);
     digitalWrite(p+1, LOW);
     pinMode(p, INPUT);
   }
-  Serial.print(".WAV!");
+  message+=".WAV!";
+  Serial.println(message);
 }
 
