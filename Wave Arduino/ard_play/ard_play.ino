@@ -113,7 +113,7 @@ void loop() {
     message[j] = '\0';
   }
   char ch = Serial.read();
-  for(int i = 0; i < 11 && ch != '!' ; i++, ch = Serial.read()) 
+  for(int i = 0; ch != '!' ; i++, ch = Serial.read()) 
   { 
  
     message[i] = ch; 
@@ -122,6 +122,7 @@ void loop() {
     }
   }
   playfile(message);
+  Serial.print(message);
 }
 
 
