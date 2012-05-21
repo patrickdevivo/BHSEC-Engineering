@@ -12,8 +12,6 @@ FatReader f;      // This holds the information for the file we're play
 
 WaveHC wave;      // This is the only wave (audio) object, since we will only play one at a time
 
-#define DEBOUNCE 100  // button debouncer
-
 // this handy function will return the number of bytes currently free in RAM, great for debugging!   
 int freeRam(void)
 {
@@ -42,27 +40,9 @@ void sdErrorCheck(void)
 void setup() {
   // set up serial port
   Serial.begin(9600);
-  putstring_nl("WaveHC with 6 buttons");
   
-   putstring("Free RAM: ");       // This can help with debugging, running out of RAM is bad
+  putstring("Free RAM: ");       // This can help with debugging, running out of RAM is bad
   Serial.println(freeRam());      // if this is under 150 bytes it may spell trouble!
-  
-  // Set the output pins for the DAC control. This pins are defined in the library
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
- 
-  // pin13 LED
-  pinMode(13, OUTPUT);
- 
-  // enable pull-up resistors on switch pins (analog inputs)
-  digitalWrite(14, HIGH);
-  digitalWrite(15, HIGH);
-  digitalWrite(16, HIGH);
-  digitalWrite(17, HIGH);
-  digitalWrite(18, HIGH);
-  digitalWrite(19, HIGH);
  
   //  if (!card.init(true)) { //play with 4 MHz spi if 8MHz isn't working for you
   if (!card.init()) {         //play with 8 MHz spi (default faster!)  
@@ -102,9 +82,8 @@ void setup() {
   putstring_nl("Ready!");
 }
 
+char message[10];
 void loop() {
-  char message[10];
- 
   while (Serial.available() <2)
   {
   }
@@ -121,8 +100,13 @@ void loop() {
     {
     }
   }
+  message[6]='.';
+  message[7]='W';
+  message[8]='A';
+  message[9]='V';
   playfile(message);
   Serial.print(message);
+  delay(5000);
 }
 
 
