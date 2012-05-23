@@ -11,7 +11,7 @@ void loop()
 {
   int n;
   int m;
-  for(int p=2; p<=13; p+=2)
+  for(int p=2; p<=12; p+=2)
   {
     n = digitalRead(p);
     m = digitalRead(p+1);
@@ -21,12 +21,13 @@ void loop()
     }
     Serial.print(n+m);
     pinMode(p, OUTPUT);
+    pinMode(p+1, OUTPUT);
     digitalWrite(p, LOW);
     digitalWrite(p+1, LOW);
     pinMode(p, INPUT);
+    pinMode(p+1, INPUT);
   }
-  Serial.print("!");
-  delay(3000);
-//Serial.print("200000.WAV!");
-}
+  Serial.print(".WAV!");
+  delay(100);
 
+}
