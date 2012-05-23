@@ -1,3 +1,9 @@
+//CREDIT
+//LadyAda for the Wave Shield code
+//draig from freenode.net IRC Server for help with the serial code
+
+
+
 #include <FatReader.h>
 #include <SdReader.h>
 #include <avr/pgmspace.h>
@@ -11,7 +17,9 @@ FatReader root;   // This holds the information for the filesystem on the card
 FatReader f;      // This holds the information for the file we're play
 
 WaveHC wave;      // This is the only wave (audio) object, since we will only play one at a time
-
+String buffer = String("");
+char character = 0x0;
+char message[10];
 // this handy function will return the number of bytes currently free in RAM, great for debugging!   
 int freeRam(void)
 {
@@ -82,31 +90,26 @@ void setup() {
   putstring_nl("Ready!");
 }
 
-char message[10];
+
 void loop() {
-  while (Serial.available() <2)
+   
+ if (Serial.available() >0 )
   {
+    character = Serial.read();
+    buffer+=character;
+
   }
-  for(int j = 0; j < 11; j++)
+  if (character=='!'&& buffer.length()==11 )
   {
-    message[j] = '\0';
+    buffer = buffer.substring(0, buffer.length()-1);
+    buffer.toCharArray(message,11);
+    Serial.println(message);
+//    playfile(message);
+    buffer=String("");
   }
-  char ch = Serial.read();
-  for(int i = 0; ch != '!' ; i++, ch = Serial.read()) 
-  { 
- 
-    message[i] = ch; 
-    while (Serial.available() <1)
-    {
-    }
-  }
-  message[6]='.';
-  message[7]='W';
-  message[8]='A';
-  message[9]='V';
-  playfile(message);
-  Serial.print(message);
-  delay(5000);
+
+  
+
 }
 
 
@@ -129,7 +132,7 @@ void playfile(char *name) {
   }
   // look in the root directory and open the file
   if (!f.open(root, name)) {
-    putstring("Couldn't open file "); Serial.print(name); return;
+    putstring("Couldn't open file "); Serial.println(name); return;
   }
   // OK read the file and turn it into a wave object
   if (!wave.create(f)) {
@@ -138,4 +141,5 @@ void playfile(char *name) {
   
   // ok time to play! start playback
   wave.play();
+  
 }
