@@ -92,22 +92,24 @@ void setup() {
 
     int index=0;
     char buffer[11];
-     
+    char character;
     void loop() {
       if (Serial.available() >0 )  {
         character = Serial.read();
-        if !(character == '!' && index==11)
+        if (!(character == '!' && index==11))
+          {
           buffer[index++] = character;
-     
+     }
         if (index >= 11) {
           Serial.println(message);
           // playfile(message);
-          for (index=0; index<12; x++){
+          for (index=0; index<12; index++){
             buffer[index] = \0;
             index=0;
           }
         }
       }
+}
 
 //void loop() {
    
