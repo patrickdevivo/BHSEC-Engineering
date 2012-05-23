@@ -17,9 +17,9 @@ FatReader root;   // This holds the information for the filesystem on the card
 FatReader f;      // This holds the information for the file we're play
 
 WaveHC wave;      // This is the only wave (audio) object, since we will only play one at a time
-//String buffer = String("");
-//char character = 0x0;
-// char message[10];
+String buffer = String("");
+char character = 0x0;
+ char message[10];
 // this handy function will return the number of bytes currently free in RAM, great for debugging!   
 int freeRam(void)
 {
@@ -90,47 +90,27 @@ void setup() {
   putstring_nl("Ready!");
 }
 
-    int index=0;
-    char buffer[11];
-    char character;
-    void loop() {
-      if (Serial.available() >0 )  {
-        character = Serial.read();
-        if (!(character == '!' && index==11))
-          {
-          buffer[index++] = character;
-     }
-        if (index >= 11) {
-          Serial.println(message);
-          // playfile(message);
-          for (index=0; index<12; index++){
-            buffer[index] = \0;
-            index=0;
-          }
-        }
-      }
-}
-
-//void loop() {
    
- //if (Serial.available() >0 )
-  //{
-    //character = Serial.read();
-    //buffer+=character;
+void loop() {
+   
+ if (Serial.available() >0 )
+ {
+    character = Serial.read();
+    buffer+=character;
 
-  //}
-  //if (character=='!'&& buffer.length()==11 )
-  //{
-    //buffer = buffer.substring(0, buffer.length()-1);
-    //buffer.toCharArray(message,11);
-    //Serial.println(message);
-//    playfile(message);
-    //buffer=String("");
-  //}
+  }
+  if (character=='!'&& buffer.length()==11 )
+  {
+    buffer = buffer.substring(0, buffer.length()-1);
+    buffer.toCharArray(message,11);
+    Serial.println(message);
+    playfile(message);
+    buffer=String("");
+  }
 
   
 
-//}
+}
 
 
 
