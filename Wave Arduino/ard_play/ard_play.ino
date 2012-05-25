@@ -104,7 +104,7 @@ void loop() {
     buffer = buffer.substring(0, buffer.length()-1);
     buffer.toCharArray(message,11);
     Serial.println(message);
-    playfile(message);
+   // playfile(message);
     buffer=String("");
   }
 
