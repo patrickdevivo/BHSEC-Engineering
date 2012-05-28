@@ -102,10 +102,7 @@ message+=n+m;
 pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT);
 pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
 }
-//message[6] = '.';
-//message[7] = 'W';
-//message[8] = 'A';
-//message[9] = 'V';
+
 //int button= digitalRead (21); 
 //
 //int stat;
