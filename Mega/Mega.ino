@@ -103,30 +103,30 @@ pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT);
 pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
 }
 
-//int button= digitalRead (21); 
-//
-//int stat;
-//if (button != stat) 
-//{
-//  if (count ==0) 
-//  {
-//    message += 'p';
-//  }
-//  if (count ==1) 
-//  {
-//    message += 's';
-//  }
-//  if (count ==2) 
-//  {
-//    message += 'f';
-//  }
-//  if (count !=2)
-//  count++; 
-//  else
-//  {
-//   count=0; 
-//  }
-//}
+int button= digitalRead (21); 
+
+int stat;
+if (button != stat) 
+{
+  if (count ==0) 
+  {
+    message += 'p';
+  }
+  if (count ==1) 
+  {
+    message += 's';
+  }
+  if (count ==2) 
+  {
+    message += 'f';
+  }
+  if (count !=2)
+  count++; 
+  else
+  {
+   count=0; 
+  }
+}
 button=stat;
 message += ".WAV";
 message.toCharArray(file, 12);
