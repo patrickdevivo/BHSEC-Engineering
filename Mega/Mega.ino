@@ -102,7 +102,7 @@ message+=n+m;
 pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT);
 pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
 }
-
+//Code for button start
 int button= digitalRead (21); 
 
 int stat;
@@ -128,6 +128,8 @@ if (button != stat)
   }
 }
 button=stat;
+//end of button code
+
 message += ".WAV";
 message.toCharArray(file, 12);
 if(file == "000000p.WAV"||file == "000000s.WAV"||file == "000000f.WAV") return;
