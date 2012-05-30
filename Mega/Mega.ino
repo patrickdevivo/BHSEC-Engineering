@@ -4,17 +4,16 @@
 #include "WaveUtil.h"
 #include "WaveHC.h"
 
-
 SdReader card;    // This object holds the information for the card
 FatVolume vol;    // This holds the information for the partition on the card
 FatReader root;   // This holds the information for the filesystem on the card
 FatReader f;      // This holds the information for the file we'll play
 
 WaveHC wave;      // This is the only wave (audio) object, since we will only play one at a time
-// this handy function will return the number of bytes currently free in RAM, great for debugging!   
 
-//INIT METHODS
-int freeRam(void)
+//INIT ###############
+
+int freeRam(void) // this handy function will return the number of bytes currently free in RAM, great for debugging!
 {
   extern int  __bss_end; 
   extern int  *__brkval; 
@@ -43,14 +42,11 @@ int count=0;
 void setup()
 {
   Serial.begin(9600);
- for (int pins=23; pins<=45; pins+=2)
-  {
-    pinMode(pins, INPUT);
-    
+  for (int pins=23; pins<=45; pins+=2) {
+    pinMode(pins, INPUT);   
   }
+
   pinMode(21, OUTPUT);
-  
-  
   putstring("Free RAM: ");       // This can help with debugging, running out of RAM is bad
   Serial.println(freeRam());      // if this is under 150 bytes it may spell trouble!
  
@@ -91,31 +87,37 @@ void setup()
   // Whew! We are past the tough parts.
   putstring_nl("Ready!");
 }
-//END OF INIT
+
+//END OF INIT ###############
 
 void loop()
 {
+
   String message;
   char file[12];
+
   for (int count=23; count<=43; count+=4)
     {
     int n=digitalRead(count);
     int m=digitalRead(count+2);
     if(m==1) m=2;
-    message+=(n+m);          //are we concatenating as strings or adding integers? looks like integers.
-    pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT); //do these lines reset both pins or smthng?
+    message+=(n+m);                   //math then string concatenation
+
+    //do these lines reset both pins or smthng?
+    pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT); 
     pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
     }
 
-  //Code for button start
+  //BUTTON #####
   int button= digitalRead (21); 
   int stat;
 
-/*
-I am confused about this entire section. The switch block using count is after the for loop where count exists.
-Furthermore, stat has only just been initialized; it will always execute at least once unless button is null.
-If this is the desired effect, why not just use a do-while statement?
-*/
+  /*
+  I am confused about this entire section. The switch block using count is after the for loop where count exists.
+  Or at least, that's true if I'm correct about for loop variables expiring after use.
+  Furthermore, stat has only just been initialized; it will always execute at least once unless button is null.
+  If this is the desired effect, why not just use a do-while statement?
+  */
 
   if (button != stat) 
   {
@@ -144,8 +146,9 @@ If this is the desired effect, why not just use a do-while statement?
     }
   }
 
-  button=stat;          //I don't understand why we have a stat variable or what it is.
-  //end of button code
+  button=stat;          //I don't understand why we have a stat variable or what it is, but I think you just set
+                        //button to null.
+  //BUTTON END #####
 
   message += ".WAV";
   message.toCharArray(file, 12);
@@ -155,14 +158,17 @@ If this is the desired effect, why not just use a do-while statement?
 }
 
 void playfile(char *name) {
+
   // see if the wave object is currently doing something
-  if (wave.isplaying) {// already playing something, so stop it!
-    wave.stop(); // stop it
+  if (wave.isplaying) {               // already playing something, so stop it!
+    wave.stop();                  // stop it
   }
+
   // look in the root directory and open the file
   if (!f.open(root, name)) {
     putstring("Couldn't open file "); Serial.println(name); return;
   }
+
   // OK read the file and turn it into a wave object
   if (!wave.create(f)) {
     putstring_nl("Not a valid WAV"); return;
