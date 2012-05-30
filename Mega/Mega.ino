@@ -8,12 +8,12 @@
 SdReader card;    // This object holds the information for the card
 FatVolume vol;    // This holds the information for the partition on the card
 FatReader root;   // This holds the information for the filesystem on the card
-FatReader f;      // This holds the information for the file we're play
+FatReader f;      // This holds the information for the file we'll play
 
 WaveHC wave;      // This is the only wave (audio) object, since we will only play one at a time
 // this handy function will return the number of bytes currently free in RAM, great for debugging!   
 
-
+//INIT METHODS
 int freeRam(void)
 {
   extern int  __bss_end; 
@@ -37,7 +37,9 @@ void sdErrorCheck(void)
   Serial.println(card.errorData(), HEX);
   while(1);
 }
+
 int count=0;
+
 void setup()
 {
   Serial.begin(9600);
@@ -86,55 +88,70 @@ void setup()
     while(1);                             // then 'halt' - do nothing!
   }
   
-  // Whew! We got past the tough parts.
+  // Whew! We are past the tough parts.
   putstring_nl("Ready!");
 }
+//END OF INIT
+
 void loop()
 {
-String message;
-char file[12];
-for (int count=23; count<=43; count+=4)
-{
-int n=digitalRead(count);
-int m=digitalRead(count+2);
-if(m==1) m=2;
-message+=n+m;
-pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT);
-pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
-}
-//Code for button start
-int button= digitalRead (21); 
+  String message;
+  char file[12];
+  for (int count=23; count<=43; count+=4)
+    {
+    int n=digitalRead(count);
+    int m=digitalRead(count+2);
+    if(m==1) m=2;
+    message+=(n+m);          //are we concatenating as strings or adding integers? looks like integers.
+    pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT); //do these lines reset both pins or smthng?
+    pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
+    }
 
-int stat;
-if (button != stat) 
-{
-  if (count ==0) 
-  {
-    message += 'p';
-  }
-  if (count ==1) 
-  {
-    message += 's';
-  }
-  if (count ==2) 
-  {
-    message += 'f';
-  }
-  if (count !=2)
-  count++; 
-  else
-  {
-   count=0; 
-  }
-}
-button=stat;
-//end of button code
+  //Code for button start
+  int button= digitalRead (21); 
+  int stat;
 
-message += ".WAV";
-message.toCharArray(file, 12);
-if(file == "000000p.WAV"||file == "000000s.WAV"||file == "000000f.WAV") return;
-Serial.println(file);
-//playfile(file);
+/*
+I am confused about this entire section. The switch block using count is after the for loop where count exists.
+Furthermore, stat has only just been initialized; it will always execute at least once unless button is null.
+If this is the desired effect, why not just use a do-while statement?
+*/
+
+  if (button != stat) 
+  {
+    switch (count) {
+      case 0:
+        message += 'p';
+        break;
+      case 1:
+        message += 's';
+        break;
+      case 2:
+        message += 'f';
+        break;
+      default:
+        break;
+    }
+
+    if (count !=2)      //this doesn't make any sense. Why are you incrementing count? This isn't a loop,
+                        //it's an if statement. And why does this only happen if it's not a flute?
+    count++; 
+    else
+    {
+     count=0;           //why set count to zero? Aren't we exiting the if statement? This is still a part of the
+                        //larger if statement, yet its action with count has nothing to do with the initial logic
+                        //of said if statment.
+    }
+  }
+
+  button=stat;          //I don't understand why we have a stat variable or what it is.
+  //end of button code
+
+  message += ".WAV";
+  message.toCharArray(file, 12);
+  if(file == "000000p.WAV"||file == "000000s.WAV"||file == "000000f.WAV") return;
+  Serial.println(file);
+  //playfile(file);     //is this supposed to be commented?
 }
 
 void playfile(char *name) {
