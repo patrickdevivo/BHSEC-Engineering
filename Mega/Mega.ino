@@ -37,13 +37,15 @@ void sdErrorCheck(void)
   while(1);
 }
 
-int count=0;
+int count_button=0;
 
 void setup()
 {
   Serial.begin(9600);
   for (int pins=23; pins<=45; pins+=2) {
-    pinMode(pins, INPUT);   
+    pinMode(pins, OUTPUT);
+    digitalWrite(pins, LOW);
+    pinMode(pins, INPUT);
   }
 
   pinMode(21, OUTPUT);
@@ -88,13 +90,19 @@ void setup()
   putstring_nl("Ready!");
 }
 
+String previous;
+int instrumentNumber=3;
+String message;
+char file[12];
+int lastButton;
+String letter;
+
 //END OF INIT ###############
 
 void loop()
 {
 
-  String message;
-  char file[12];
+
 
   for (int count=23; count<=43; count+=4)
     {
@@ -109,52 +117,45 @@ void loop()
     }
 
   //BUTTON #####
-  int button= digitalRead (21); 
-  int stat;
-
-  /*
-  I am confused about this entire section. The switch block using count is after the for loop where count exists.
-  Or at least, that's true if I'm correct about for loop variables expiring after use.
-  Furthermore, stat has only just been initialized; it will always execute at least once unless button is null.
-  If this is the desired effect, why not just use a do-while statement?
-  */
-
-  if (button != stat) 
-  {
-    switch (count) {
-      case 0:
-        message += 'p';
-        break;
-      case 1:
-        message += 's';
-        break;
-      case 2:
-        message += 'f';
-        break;
-      default:
-        break;
-    }
-
-    if (count !=2)      //this doesn't make any sense. Why are you incrementing count? This isn't a loop,
-                        //it's an if statement. And why does this only happen if it's not a flute?
-    count++; 
-    else
-    {
-     count=0;           //why set count to zero? Aren't we exiting the if statement? This is still a part of the
-                        //larger if statement, yet its action with count has nothing to do with the initial logic
-                        //of said if statment.
-    }
+  int button = digitalRead(21);
+  Serial.println(button);
+  Serial.println(lastButton);
+  instrumentNumber++;
+  if (button != lastButton) {
+      instrumentNumber++;
+      message += interpret(instrumentNumber);
+  } else {
+      message += interpret(instrumentNumber);
   }
-
-  button=stat;          //I don't understand why we have a stat variable or what it is, but I think you just set
-                        //button to null.
+  
+  lastButton=button;
   //BUTTON END #####
 
   message += ".WAV";
-  message.toCharArray(file, 12);
-  if(file == "000000p.WAV"||file == "000000s.WAV"||file == "000000f.WAV") return;
-  Serial.println(file);
-  //playfile(file);     //is this supposed to be commented?
+  if(message != previous) {
+    if(!(message == "000000p.WAV"||message == "000000s.WAV"||message == "000000f.WAV" || message == "000000.WAV")) {
+      message.toCharArray(file, 12);
+      Serial.println(file);
+      playfile(file);
+    }
+  }
+  previous = message;
+}
+
+char interpret(int instrumentNumber){
+  switch (instrumentNumber){
+    case 1:
+        return 'p';
+        break;
+    case 2:
+        return 'f';
+        break;
+    case 3:
+        instrumentNumber=0;
+    default:
+        return 's';
+        break;
+  }
 }
 
 void playfile(char *name) {
