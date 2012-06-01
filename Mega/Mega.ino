@@ -126,7 +126,7 @@ String message;
 
   message += ".WAV";
   if(!(message.equals(previous))) {
-      if(!(message.equals ("000000p.WAV")||message.equals ("000000s.WAV")||message.equals ("000000f.WAV")||message.equals ("000000t.WAV"))) {
+      if(!(message.equals ("000000.WAV")||message.equals ("0000005.WAV")||message.equals ("0000006.WAV")||message.equals ("0000007.WAV")||message.equals ("0000008.WAV")||message.equals ("0000009.WAV"))) {
       message.toCharArray(file, 12);
       Serial.print("message:");Serial.print(file);Serial.print("  previous: "); Serial.println(previous);
       playfile(file);
@@ -161,16 +161,23 @@ void playfile(char *name) {
   wave.play();
   
 }
-char interpret(){
-  instrumentNumber %= 4;
+int interpret(){
+  instrumentNumber %= 5;
   switch (instrumentNumber){
+    //sine
     case 0:
-      return 's';
+      return 5;
+    //piano
     case 1:
-      return 'p';
+      return 6;
+    //flute
     case 2:
-      return 'f';
+      return 7;
+    //trumpet
     case 3:
-      return 't';
+      return 8;
+    //violen
+    case 4:
+      return 9;
       }
 }
