@@ -4,6 +4,7 @@
 #include "WaveUtil.h"
 #include "WaveHC.h"
 
+
 SdReader card;    // This object holds the information for the card
 FatVolume vol;    // This holds the information for the partition on the card
 FatReader root;   // This holds the information for the filesystem on the card
@@ -48,7 +49,7 @@ void setup()
     pinMode(pins, INPUT);
   }
 
-  pinMode(21, OUTPUT);
+  pinMode(14, OUTPUT);
   putstring("Free RAM: ");       // This can help with debugging, running out of RAM is bad
   Serial.println(freeRam());      // if this is under 150 bytes it may spell trouble!
  
@@ -92,15 +93,17 @@ void setup()
 
 //END OF INIT ################################################################################################
 
-String previous;
-String message;
-char file[12];
+
+
 int instrumentNumber=0;
 int lastButton=0;
-
+String previous;
 void loop()
-{
 
+{
+char file[12];
+
+String message;
   for (int count=23; count<=43; count+=4)
     {
     int n=digitalRead(count);
@@ -113,14 +116,7 @@ void loop()
     }
 
   //BUTTON #####
-  int button = digitalRead(21);
-
-  Serial.print("This is button: ");
-  Serial.println(button);
-  Serial.print("This is lastButton: ");
-  Serial.println(lastButton);
-  Serial.print("This is instrumentNumber: ");
-  Serial.println(instrumentNumber);
+  int button = digitalRead(14);
 
   if (button != lastButton) instrumentNumber++;
   message += interpret();
@@ -129,27 +125,20 @@ void loop()
   //BUTTON END #####
 
   message += ".WAV";
-  if(message != previous) {
-    if(!(message == "000000p.WAV"||message == "000000s.WAV"||message == "000000f.WAV" || message == "000000.WAV")) {
+  if(!(message.equals(previous))) {
+      if(!(message.equals ("000000p.WAV")||message.equals ("000000s.WAV")||message.equals ("000000f.WAV")||message.equals ("000000t.WAV"))) {
       message.toCharArray(file, 12);
-      Serial.println(file);
+      Serial.print("message:");Serial.print(file);Serial.print("  previous: "); Serial.println(previous);
       playfile(file);
-    }
+    } 
   }
-  previous = message;
+  
+previous=message;
+ 
+
 }
 
-char interpret(){
-  instrumentNumber %= 3;
-  switch (instrumentNumber){
-    case 0:
-      return 's';
-    case 1:
-      return 'p';
-    case 2:
-      return 'f';
-      }
-}
+
 
 void playfile(char *name) {
 
@@ -171,4 +160,17 @@ void playfile(char *name) {
   // ok time to play! start playback
   wave.play();
   
+}
+char interpret(){
+  instrumentNumber %= 4;
+  switch (instrumentNumber){
+    case 0:
+      return 's';
+    case 1:
+      return 'p';
+    case 2:
+      return 'f';
+    case 3:
+      return 't';
+      }
 }
