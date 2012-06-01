@@ -90,43 +90,40 @@ void setup()
   putstring_nl("Ready!");
 }
 
+//END OF INIT ################################################################################################
+
 String previous;
-int instrumentNumber=3;
 String message;
 char file[12];
-int lastButton;
-String letter;
-
-//END OF INIT ###############
+int instrumentNumber=0;
+int lastButton=0;
 
 void loop()
 {
-
-
 
   for (int count=23; count<=43; count+=4)
     {
     int n=digitalRead(count);
     int m=digitalRead(count+2);
     if(m==1) m=2;
-    message+=(n+m);                   //math then string concatenation
+    message+=(n+m);
 
-    //do these lines reset both pins or smthng?
     pinMode(count, OUTPUT); digitalWrite(count, LOW); pinMode(count, INPUT); 
     pinMode(count+2, OUTPUT); digitalWrite(count+2, LOW); pinMode(count+2, INPUT);
     }
 
   //BUTTON #####
   int button = digitalRead(21);
+
+  Serial.print("This is button: ");
   Serial.println(button);
+  Serial.print("This is lastButton: ");
   Serial.println(lastButton);
-  instrumentNumber++;
-  if (button != lastButton) {
-      instrumentNumber++;
-      message += interpret(instrumentNumber);
-  } else {
-      message += interpret(instrumentNumber);
-  }
+  Serial.print("This is instrumentNumber: ");
+  Serial.println(instrumentNumber);
+
+  if (button != lastButton) instrumentNumber++;
+  message += interpret();
   
   lastButton=button;
   //BUTTON END #####
@@ -142,20 +139,16 @@ void loop()
   previous = message;
 }
 
-char interpret(int instrumentNumber){
+char interpret(){
+  instrumentNumber %= 3;
   switch (instrumentNumber){
+    case 0:
+      return 's';
     case 1:
-        return 'p';
-        break;
+      return 'p';
     case 2:
-        return 'f';
-        break;
-    case 3:
-        instrumentNumber=0;
-    default:
-        return 's';
-        break;
-  }
+      return 'f';
+      }
 }
 
 void playfile(char *name) {
